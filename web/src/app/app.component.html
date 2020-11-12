@@ -297,19 +297,27 @@
 
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
-<!--  <img-->
-<!--    width="40"-->
-<!--    alt="Angular Logo"-->
-<!--    src="assets/logo.jpeg"-->
-<!--  />-->
+ <img
+  width="40"
+  alt="Angular Logo"
+  src="assets/logo.jpeg"
+/>
   <span>IQLD</span>
 </div>
 
 <div class="content" role="main">
-  <canvas style="border: 1px solid #ccc;"></canvas>
+  <div style="margin-bottom: 10px;">
+    <input [(ngModel)]="bgColor" type="color"/>
+  </div>
+  <canvas
+    id="canvas"
+    [width]="width"
+    [height]="height"
+    style="border: 1px solid #ccc; width: 400px"></canvas>
   <div>
     {{bottomText}}
   </div>
+  <img #image [src]="imagePath" style="width: 1px; height: 1px"/>
 </div>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
