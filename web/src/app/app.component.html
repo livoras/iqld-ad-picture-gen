@@ -310,21 +310,28 @@
     <div>
       颜色：<input [(ngModel)]="config.bgColor" type="color"/>
     </div>
-    <div>
-      文本：<textarea [(ngModel)]="config.bottomText" type="text"></textarea>
+    <div *ngFor="let tconfig of config.texts">
+      <div>
+        文本：<textarea [(ngModel)]="tconfig.content" type="text"></textarea>
+      </div>
+      <div>
+        字体类型：<input [(ngModel)]="tconfig.family" type="text" />
+      </div>
+      <div>
+        字体粗细：<input [(ngModel)]="tconfig.weigth" type="text" />
+      </div>
+      <div>
+        字体颜色：<input [(ngModel)]="tconfig.color" type="color" />
+      </div>
+      <div>
+        字体大小：<input [(ngModel)]="tconfig.size" type="number" />
+      </div>
+      <div>
+        字体距离图片距离：<input [(ngModel)]="tconfig.paddingTop" type="number" />
+      </div>
+      <hr/>
     </div>
-    <div>
-      字体类型：<input [(ngModel)]="config.fontFamily" type="text" />
-    </div>
-    <div>
-      字体颜色：<input [(ngModel)]="config.textColor" type="color" />
-    </div>
-    <div>
-      字体大小：<input [(ngModel)]="config.textSize" type="number" />
-    </div>
-    <div>
-      字体距离图片距离：<input [(ngModel)]="config.textPadding" type="number" />
-    </div>
+    <button (click)="handleAddText()">新增文本</button>
     <div>
       上传图片：<input (change)="handleChangeFile($event)" type="file" />
     </div>
