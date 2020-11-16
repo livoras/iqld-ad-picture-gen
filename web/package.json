@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-opt": "npx ng build --vendor-chunk --prod --build-optimizer --progress --output-hashing=all && mv dist/web docs",
+    "build-opt": "npx ng build --vendor-chunk --prod --build-optimizer --progress --output-hashing=all && rm -fr ../docs && mv dist/web ../docs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
