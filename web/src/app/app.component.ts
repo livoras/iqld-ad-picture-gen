@@ -10,6 +10,16 @@ interface  IConfig {
   textColor: string
 }
 
+const defaultConfig: IConfig = {
+  bgColor: '#ccc',
+  imagePath: '',
+  textSize: 70,
+  fontFamily: "Comic Sans MS",
+  textPadding: 0.5,
+  bottomText: '',
+  textColor: '#000',
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,15 +30,7 @@ export class AppComponent implements OnInit {
 
   public ctx: CanvasRenderingContext2D;
 
-  public config: IConfig = {
-    bgColor: '#ccc',
-    imagePath: '',
-    textSize: 70,
-    fontFamily: "Comic Sans MS",
-    textPadding: 0.5,
-    bottomText: '',
-    textColor: '#000',
-  };
+  public config: IConfig = defaultConfig;
 
   public width = 1080;
   public height = 1920;
@@ -112,9 +114,9 @@ export class AppComponent implements OnInit {
 
   private restoreConfig() {
     try {
-      this.config = JSON.parse(localStorage.getItem('configuration'))
+      this.config = JSON.parse(localStorage.getItem('configuration')) || defaultConfig
     } catch(e) {
-      console.log(e)
+      this.config = defaultConfig
     }
   }
 }
