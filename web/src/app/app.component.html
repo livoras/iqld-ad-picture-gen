@@ -307,19 +307,34 @@
 
 <div class="content" role="main">
   <div style="margin-bottom: 10px;">
-    <input [(ngModel)]="bgColor" type="color"/>
-    <input [(ngModel)]="bottomText" type="text" />
-    <input [(ngModel)]="fontFamily" type="text" />
-    <input [(ngModel)]="textSize" type="number" />
-    <input [(ngModel)]="textPadding" type="number" />
-    <input (change)="handleChangeFile($event)" type="file" />
+    <div>
+      颜色：<input [(ngModel)]="config.bgColor" type="color"/>
+    </div>
+    <div>
+      文本：<textarea [(ngModel)]="config.bottomText" type="text"></textarea>
+    </div>
+    <div>
+      字体类型：<input [(ngModel)]="config.fontFamily" type="text" />
+    </div>
+    <div>
+      字体颜色：<input [(ngModel)]="config.textColor" type="color" />
+    </div>
+    <div>
+      字体大小：<input [(ngModel)]="config.textSize" type="number" />
+    </div>
+    <div>
+      字体距离图片距离：<input [(ngModel)]="config.textPadding" type="number" />
+    </div>
+    <div>
+      上传图片：<input (change)="handleChangeFile($event)" type="file" />
+    </div>
   </div>
   <canvas
     id="canvas"
     [width]="width"
     [height]="height"
     style="border: 1px solid #ccc; width: 400px"></canvas>
-  <img #image [src]="imagePath" style="width: 1px; height: 1px"/>
+  <img #image [src]="config.imagePath" style="width: 1px; height: 1px"/>
 </div>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

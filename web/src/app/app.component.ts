@@ -1,21 +1,37 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
+interface  IConfig {
+  bgColor: string,
+  imagePath: string,
+  textSize: number,
+  fontFamily: string,
+  textPadding: number,
+  bottomText: string,
+  textColor: string
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  public bottomText = '🔥🔥🔥 Most loved fire cat! 🔥🔥';
   public canvas: HTMLCanvasElement = null;
+
   public ctx: CanvasRenderingContext2D;
-  public bgColor = '#ccc';
-  public imagePath = '';
+
+  public config: IConfig = {
+    bgColor: '#ccc',
+    imagePath: '',
+    textSize: 70,
+    fontFamily: "Comic Sans MS",
+    textPadding: 0.5,
+    bottomText: '',
+    textColor: '#000',
+  };
+
   public width = 1080;
   public height = 1920;
-  public textSize = 70;
-  public fontFamily = "Comic Sans MS";
-  public textPadding = 0.2;
   public image: HTMLImageElement
 
   @ViewChild('image', { read: ElementRef, static: true })
@@ -24,7 +40,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
+    this.ctx.scale(2, 2)
+    this.restoreConfig()
     this.initRendering();
+    this.saveConfigurationIntervally()
   }
 
   public initRendering(): void {
@@ -38,7 +57,7 @@ export class AppComponent implements OnInit {
 
   public render(): void {
     const ctx = this.ctx;
-    ctx.fillStyle = this.bgColor;
+    ctx.fillStyle = this.config.bgColor;
     ctx.fillRect(0, 0, 10000, 10000);
 
     const imageElement = this.image || this.imageRef.nativeElement;
@@ -50,30 +69,52 @@ export class AppComponent implements OnInit {
       this.width,
       );
 
-    ctx.fillStyle = "#000"
+    ctx.fillStyle = this.config.textColor
     const MAX_TEXT_WIDTH = this.width;
-    const PADDING = this.textSize * this.textPadding;
+    const PADDING = this.config.textSize * this.config.textPadding;
     const bottomTop = this.width + (this.height - this.width) / 2 + PADDING
-    ctx.font = `${this.textSize}px ${this.fontFamily}`;
+    ctx.font = `${this.config.textSize}px ${this.config.fontFamily}`;
     ctx.textBaseline = "top"
     ctx.textAlign = "center";
-    ctx.fillText(this.bottomText, this.width / 2, bottomTop, MAX_TEXT_WIDTH)
+    const lines = this.config.bottomText.split("\n")
+    let x = this.width / 2
+    let y = bottomTop
+    const LINE_HEIGHT = this.config.textSize
+    // ctx.fillText(this.bottomText, x, y, MAX_TEXT_WIDTH)
+    for (let i = 0; i<lines.length; i++) {
+      ctx.fillText(lines[i], x, y + (i * LINE_HEIGHT), MAX_TEXT_WIDTH);
+    }
   }
 
   public handleChangeFile(e: Event): void {
-    const file = (e.target as any).files[0]
     // Create a data URL from the image file
-    let imageFile = file
+    let imageFile = (e.target as any).files[0]
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onloadend = (e) => {
-      var myImage = new Image(); // Creates image object
+      const myImage = new Image(); // Creates image object
       myImage.src = (e.target as any).result; // Assigns converted image to image object
       myImage.onload = (ev) => {
-        // const imgData = this.canvas.toDataURL("image/jpeg",0.75); // Assigns image base64 string in jpeg format to a variable
-        // this.imagePath = imgData
         this.image = myImage
       }
+    }
+  }
+
+  private saveConfigurationIntervally() {
+    setInterval(() => {
+      try {
+        localStorage.setItem('configuration', JSON.stringify(this.config))
+      } catch(e) {
+        console.log(e)
+      }
+    }, 3000)
+  }
+
+  private restoreConfig() {
+    try {
+      this.config = JSON.parse(localStorage.getItem('configuration'))
+    } catch(e) {
+      console.log(e)
     }
   }
 }
